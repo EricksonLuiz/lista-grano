@@ -1,5 +1,5 @@
-import React from 'react';
-import { Phone, MapPin } from 'lucide-react';
+import React from "react";
+import { Phone, MapPin } from "lucide-react";
 
 interface HeaderProps {
   phone: string;
@@ -7,18 +7,21 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ phone, address }) => {
-  
   return (
     <header className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="flex items-center mb-4 md:mb-0">
             {/* Replace with your actual logo */}
-            <img src="../img/Grano L - Preto.svg" className='max-w-[150px]'/>
+            <img
+              src="../img/Grano L - Preto.svg"
+              className="max-w-[150px]"
+              title="Logo Grano"
+            />
           </div>
-          
+
           <div className="flex flex-col md:flex-row items-center gap-4">
-            <a 
+            <a
               href={`https://wa.me/5547991467992`}
               className="flex items-center gap-2 text-gray-600 hover:text-blue-600"
               target="_blank"
@@ -27,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({ phone, address }) => {
               <Phone size={20} />
               <span>{phone}</span>
             </a>
-            
+
             <div className="flex items-center gap-2 text-gray-600">
               <MapPin size={20} />
               <span>{address}</span>

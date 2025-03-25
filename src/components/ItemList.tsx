@@ -1,7 +1,7 @@
-import React from 'react';
-import { ItemPedido } from '../types';
-import { Edit2, Trash2 } from 'lucide-react';
-import { clsx } from 'clsx';
+import React from "react";
+import { ItemPedido } from "../types";
+import { Edit2, Trash2 } from "lucide-react";
+import { clsx } from "clsx";
 
 interface PropsListaItens {
   items: ItemPedido[];
@@ -12,24 +12,28 @@ interface PropsListaItens {
 
 const ordenarItens = (items: ItemPedido[]): ItemPedido[] => {
   const obterOrdemTipo = (item: ItemPedido): number => {
-    if (item.tipoProduto === 'Kit') return 0;
+    if (item.tipoProduto === "Kit") return 0;
     return 1;
   };
 
   const obterOrdemModelagem = (modelagem: string): number => {
     switch (modelagem) {
-      case 'Masculino': return 0;
-      case 'Feminino': return 1;
-      case 'Infantil': return 2;
-      default: return 3;
+      case "Masculino":
+        return 0;
+      case "Feminino":
+        return 1;
+      case "Infantil":
+        return 2;
+      default:
+        return 3;
     }
   };
 
   const obterOrdemTamanho = (tamanho: string, modelagem: string): number => {
     const tamanhos = {
-      'Masculino': ['PP', 'P', 'M', 'G', 'GG', 'EG', 'EGG', 'XGG', 'XEGG', '5G'],
-      'Feminino': ['PP', 'P', 'M', 'G', 'GG', 'EG', 'EGG', 'XGG'],
-      'Infantil': ['2', '4', '6', '8', '10', '12', '14']
+      Masculino: ["PP", "P", "M", "G", "GG", "EG", "EGG", "XGG", "XEGG", "5G"],
+      Feminino: ["PP", "P", "M", "G", "GG", "EG", "EGG", "XGG"],
+      Infantil: ["2", "4", "6", "8", "10", "12", "14"],
     };
     return tamanhos[modelagem as keyof typeof tamanhos].indexOf(tamanho);
   };
@@ -38,47 +42,76 @@ const ordenarItens = (items: ItemPedido[]): ItemPedido[] => {
     const ordemTipo = obterOrdemTipo(a) - obterOrdemTipo(b);
     if (ordemTipo !== 0) return ordemTipo;
 
-    const ordemModelagem = obterOrdemModelagem(a.modelagem) - obterOrdemModelagem(b.modelagem);
+    const ordemModelagem =
+      obterOrdemModelagem(a.modelagem) - obterOrdemModelagem(b.modelagem);
     if (ordemModelagem !== 0) return ordemModelagem;
 
-    return obterOrdemTamanho(a.tamanhoCamisa, a.modelagem) - obterOrdemTamanho(b.tamanhoCamisa, b.modelagem);
+    return (
+      obterOrdemTamanho(a.tamanhoCamisa, a.modelagem) -
+      obterOrdemTamanho(b.tamanhoCamisa, b.modelagem)
+    );
   });
 };
 
-export const ItemList: React.FC<PropsListaItens> = ({ items, onEdit, onDelete, disabled }) => {
+export const ItemList: React.FC<PropsListaItens> = ({
+  items,
+  onEdit,
+  onDelete,
+  disabled,
+}) => {
   const itensSorted = ordenarItens(items);
 
   const obterClasseLinha = (item: ItemPedido) => {
-    return clsx('border-b transition-colors', {
-      'bg-blue-50': item.tipoProduto === 'Kit',
-      'bg-green-50': item.ehGoleiro,
-      'bg-gray-50': !item.ehGoleiro && item.tipoProduto === 'Camisa',
-      'opacity-50': disabled
+    return clsx("border-b transition-colors", {
+      "bg-blue-50": item.tipoProduto === "Kit",
+      "bg-green-50": item.ehGoleiro,
+      "bg-gray-50": !item.ehGoleiro && item.tipoProduto === "Camisa",
+      "opacity-50": disabled,
     });
   };
 
-  let ultimaModelagem = '';
-  let ultimoTipo = '';
+  let ultimaModelagem = "";
+  let ultimoTipo = "";
 
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uniforme</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modelagem</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tamanho Camisa</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tamanho Calção</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Observações</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Ações
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Nome
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Número
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Tipo
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Uniforme
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Modelagem
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Tamanho Camisa
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Tamanho Calção
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Observações
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {itensSorted.map((item, index) => {
-            const mostrarDivisor = ultimaModelagem !== item.modelagem || ultimoTipo !== item.tipoProduto;
+            const mostrarDivisor =
+              ultimaModelagem !== item.modelagem ||
+              ultimoTipo !== item.tipoProduto;
             ultimaModelagem = item.modelagem;
             ultimoTipo = item.tipoProduto;
 
@@ -90,20 +123,6 @@ export const ItemList: React.FC<PropsListaItens> = ({ items, onEdit, onDelete, d
                   </tr>
                 )}
                 <tr className={obterClasseLinha(item)}>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.nome}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.numero}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.tipoProduto}{item.ehGoleiro ? ' Goleiro' : ''}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {item.tipoUniforme === 'Regata' 
-                      ? `Regata ${item.tipoRegata}` 
-                      : `Camisa ${item.tipoManga}`}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.modelagem}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.tamanhoCamisa}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.tamanhoCalcao || '-'}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{item.observacoes || '-'}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
                     <button
                       onClick={() => onEdit(item)}
@@ -119,6 +138,29 @@ export const ItemList: React.FC<PropsListaItens> = ({ items, onEdit, onDelete, d
                     >
                       <Trash2 size={18} />
                     </button>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{item.nome}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{item.numero}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.tipoProduto}
+                    {item.ehGoleiro ? " Goleiro" : ""}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.tipoUniforme === "Regata"
+                      ? `Regata ${item.tipoRegata}`
+                      : `Camisa ${item.tipoManga}`}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.modelagem}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.tamanhoCamisa}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.tamanhoCalcao || "-"}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {item.observacoes || "-"}
                   </td>
                 </tr>
               </React.Fragment>
