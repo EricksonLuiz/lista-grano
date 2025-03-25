@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { ItemPedido, TipoModelagem, TipoProduto, TipoUniforme, TipoRegata, TipoManga } from '../types';
-import { clsx } from 'clsx';
+import React, { useState, useEffect } from "react";
+import {
+  ItemPedido,
+  TipoModelagem,
+  TipoProduto,
+  TipoUniforme,
+  TipoRegata,
+  TipoManga,
+} from "../types";
+import { clsx } from "clsx";
 
 interface PropsFormularioItem {
   onSubmit: (item: ItemPedido) => void;
@@ -8,22 +15,37 @@ interface PropsFormularioItem {
   onCancelEdit?: () => void;
 }
 
-const TAMANHOS_MASCULINO = ['PP', 'P', 'M', 'G', 'GG', 'EG', 'EGG', 'XGG', 'XEGG', '5G'];
-const TAMANHOS_FEMININO = ['PP', 'P', 'M', 'G', 'GG', 'EG', 'EGG', 'XGG'];
-const TAMANHOS_INFANTIL = ['2', '4', '6', '8', '10', '12', '14'];
+const TAMANHOS_MASCULINO = [
+  "PP",
+  "P",
+  "M",
+  "G",
+  "GG",
+  "EG",
+  "EGG",
+  "XGG",
+  "XEGG",
+  "5G",
+];
+const TAMANHOS_FEMININO = ["PP", "P", "M", "G", "GG", "EG", "EGG", "XGG"];
+const TAMANHOS_INFANTIL = ["2", "4", "6", "8", "10", "12", "14"];
 
-export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem, onCancelEdit }) => {
+export const ItemForm: React.FC<PropsFormularioItem> = ({
+  onSubmit,
+  editingItem,
+  onCancelEdit,
+}) => {
   const [item, setItem] = useState<ItemPedido>({
-    id: '',
-    nome: '',
-    numero: '',
-    tipoProduto: 'Camisa',
-    tipoUniforme: 'Camisa',
-    tipoManga: 'Curta',
+    id: "",
+    nome: "",
+    numero: "",
+    tipoProduto: "Camisa",
+    tipoUniforme: "Camisa",
+    tipoManga: "Curta",
     ehGoleiro: false,
-    modelagem: 'Masculino',
-    tamanhoCamisa: '',
-    tamanhoCalcao: '',
+    modelagem: "Masculino",
+    tamanhoCamisa: "",
+    tamanhoCalcao: "",
   });
 
   useEffect(() => {
@@ -34,11 +56,11 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
 
   const obterTamanhos = (modelagem: TipoModelagem) => {
     switch (modelagem) {
-      case 'Masculino':
+      case "Masculino":
         return TAMANHOS_MASCULINO;
-      case 'Feminino':
+      case "Feminino":
         return TAMANHOS_FEMININO;
-      case 'Infantil':
+      case "Infantil":
         return TAMANHOS_INFANTIL;
       default:
         return [];
@@ -47,44 +69,44 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validações
-    if (item.tipoUniforme === 'Camisa' && !item.tipoManga) {
-      alert('Por favor, selecione o tipo de manga');
+    if (item.tipoUniforme === "Camisa" && !item.tipoManga) {
+      alert("Por favor, selecione o tipo de manga");
       return;
     }
 
-    if (item.tipoUniforme === 'Regata' && !item.tipoRegata) {
-      alert('Por favor, selecione o tipo de regata');
+    if (item.tipoUniforme === "Regata" && !item.tipoRegata) {
+      alert("Por favor, selecione o tipo de regata");
       return;
     }
 
     if (!item.tamanhoCamisa) {
-      alert('Por favor, selecione o tamanho da camisa');
+      alert("Por favor, selecione o tamanho da camisa");
       return;
     }
 
-    if (item.tipoProduto === 'Kit' && !item.tamanhoCalcao) {
-      alert('Por favor, selecione o tamanho do calção');
+    if (item.tipoProduto === "Kit" && !item.tamanhoCalcao) {
+      alert("Por favor, selecione o tamanho do calção");
       return;
     }
-    
+
     onSubmit({
       ...item,
-      id: item.id || Math.random().toString(36).substr(2, 9)
+      id: item.id || Math.random().toString(36).substr(2, 9),
     });
-    
+
     setItem({
-      id: '',
-      nome: '',
-      numero: '',
-      tipoProduto: 'Camisa',
-      tipoUniforme: 'Camisa',
-      tipoManga: 'Curta',
+      id: "",
+      nome: "",
+      numero: "",
+      tipoProduto: "Camisa",
+      tipoUniforme: "Camisa",
+      tipoManga: "Curta",
       ehGoleiro: false,
-      modelagem: 'Masculino',
-      tamanhoCamisa: '',
-      tamanhoCalcao: '',
+      modelagem: "Masculino",
+      tamanhoCamisa: "",
+      tamanhoCalcao: "",
     });
   };
 
@@ -92,64 +114,70 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
     setItem({
       ...item,
       tipoUniforme: tipo,
-      tipoRegata: tipo === 'Regata' ? 'Nadadora' : undefined,
-      tipoManga: tipo === 'Camisa' ? 'Curta' : undefined,
-      ehGoleiro: tipo === 'Regata' ? false : item.ehGoleiro,
-      modelagem: tipo === 'Regata' && item.modelagem === 'Infantil' ? 'Masculino' : item.modelagem,
-      tamanhoCamisa: '',
-      tamanhoCalcao: '',
+      tipoRegata: tipo === "Regata" ? "Nadadora" : undefined,
+      tipoManga: tipo === "Camisa" ? "Curta" : undefined,
+      ehGoleiro: tipo === "Regata" ? false : item.ehGoleiro,
+      modelagem:
+        tipo === "Regata" && item.modelagem === "Infantil"
+          ? "Masculino"
+          : item.modelagem,
+      tamanhoCamisa: "",
+      tamanhoCalcao: "",
     });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow-sm">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 bg-white p-6 rounded-lg shadow-sm"
+    >
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Tipo de Uniforme *
         </label>
         <div className="flex gap-4">
-          <label className="inline-flex items-center">
+          <label className="inline-flex items-center cursor-pointer">
             <input
               type="radio"
-              className="form-radio text-blue-600"
-              checked={item.tipoUniforme === 'Camisa'}
-              onChange={() => handleTipoUniformeChange('Camisa')}
+              className="form-radio cursor-pointer text-blue-600"
+              checked={item.tipoUniforme === "Camisa"}
+              onChange={() => handleTipoUniformeChange("Camisa")}
             />
             <span className="ml-2">Camisa</span>
           </label>
-          <label className="inline-flex items-center">
+          <label className="inline-flex items-center cursor-pointer">
             <input
               type="radio"
-              className="form-radio text-blue-600"
-              checked={item.tipoUniforme === 'Regata'}
-              onChange={() => handleTipoUniformeChange('Regata')}
+              className="form-radio cursor-pointer text-blue-600"
+              checked={item.tipoUniforme === "Regata"}
+              onChange={() => handleTipoUniformeChange("Regata")}
             />
             <span className="ml-2">Regata</span>
           </label>
         </div>
       </div>
 
-      {item.tipoUniforme === 'Regata' && (
+      {item.tipoUniforme === "Regata" && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Tipo de Regata *
           </label>
           <div className="flex gap-4">
-            <label className="inline-flex items-center">
+            <label className="inline-flex items-center cursor-pointer">
               <input
                 type="radio"
-                className="form-radio text-blue-600"
-                checked={item.tipoRegata === 'Nadadora'}
-                onChange={() => setItem({ ...item, tipoRegata: 'Nadadora' })}
+                className="form-radio cursor-pointer text-blue-600"
+                checked={item.tipoRegata === "Nadadora"}
+                onChange={() => setItem({ ...item, tipoRegata: "Nadadora" })}
               />
               <span className="ml-2">Nadadora</span>
             </label>
-            <label className="inline-flex items-center">
+            <label className="inline-flex items-center cursor-pointer">
               <input
                 type="radio"
-                className="form-radio text-blue-600"
-                checked={item.tipoRegata === 'Machão'}
-                onChange={() => setItem({ ...item, tipoRegata: 'Machão' })}
+                className="form-radio cursor-pointer text-blue-600"
+                checked={item.tipoRegata === "Machão"}
+                onChange={() => setItem({ ...item, tipoRegata: "Machão" })}
               />
               <span className="ml-2">Machão</span>
             </label>
@@ -157,27 +185,27 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
         </div>
       )}
 
-      {item.tipoUniforme === 'Camisa' && (
+      {item.tipoUniforme === "Camisa" && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Tipo de Manga *
           </label>
           <div className="flex gap-4">
-            <label className="inline-flex items-center">
+            <label className="inline-flex items-center cursor-pointer">
               <input
                 type="radio"
-                className="form-radio text-blue-600"
-                checked={item.tipoManga === 'Curta'}
-                onChange={() => setItem({ ...item, tipoManga: 'Curta' })}
+                className="form-radio cursor-pointer text-blue-600"
+                checked={item.tipoManga === "Curta"}
+                onChange={() => setItem({ ...item, tipoManga: "Curta" })}
               />
               <span className="ml-2">Curta</span>
             </label>
-            <label className="inline-flex items-center">
+            <label className="inline-flex items-center cursor-pointer">
               <input
                 type="radio"
-                className="form-radio text-blue-600"
-                checked={item.tipoManga === 'Longa'}
-                onChange={() => setItem({ ...item, tipoManga: 'Longa' })}
+                className="form-radio cursor-pointer text-blue-600"
+                checked={item.tipoManga === "Longa"}
+                onChange={() => setItem({ ...item, tipoManga: "Longa" })}
               />
               <span className="ml-2">Longa</span>
             </label>
@@ -218,35 +246,39 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
             Tipo de Produto *
           </label>
           <div className="flex gap-4">
-            <label className="inline-flex items-center">
+            <label className="inline-flex items-center cursor-pointer">
               <input
                 type="radio"
-                className="form-radio text-blue-600"
-                checked={item.tipoProduto === 'Camisa'}
-                onChange={() => setItem({ ...item, tipoProduto: 'Camisa', tamanhoCalcao: '' })}
+                className="form-radio cursor-pointer text-blue-600"
+                checked={item.tipoProduto === "Camisa"}
+                onChange={() =>
+                  setItem({ ...item, tipoProduto: "Camisa", tamanhoCalcao: "" })
+                }
               />
               <span className="ml-2">Camisa</span>
             </label>
-            <label className="inline-flex items-center">
+            <label className="inline-flex items-center cursor-pointer">
               <input
                 type="radio"
-                className="form-radio text-blue-600"
-                checked={item.tipoProduto === 'Kit'}
-                onChange={() => setItem({ ...item, tipoProduto: 'Kit' })}
+                className="form-radio cursor-pointer text-blue-600"
+                checked={item.tipoProduto === "Kit"}
+                onChange={() => setItem({ ...item, tipoProduto: "Kit" })}
               />
               <span className="ml-2">Kit</span>
             </label>
           </div>
         </div>
 
-        {item.tipoUniforme === 'Camisa' && (
+        {item.tipoUniforme === "Camisa" && (
           <div>
-            <label className="inline-flex items-center">
+            <label className="inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
                 className="form-checkbox text-blue-600"
                 checked={item.ehGoleiro}
-                onChange={(e) => setItem({ ...item, ehGoleiro: e.target.checked })}
+                onChange={(e) =>
+                  setItem({ ...item, ehGoleiro: e.target.checked })
+                }
               />
               <span className="ml-2">Goleiro</span>
             </label>
@@ -258,24 +290,41 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
             Modelagem *
           </label>
           <div className="flex gap-4">
-            {(['Masculino', 'Feminino'] as TipoModelagem[]).map((tipo) => (
-              <label key={tipo} className="inline-flex items-center">
+            {(["Masculino", "Feminino"] as TipoModelagem[]).map((tipo) => (
+              <label
+                key={tipo}
+                className="inline-flex i cursor-pointertems-center"
+              >
                 <input
                   type="radio"
-                  className="form-radio text-blue-600"
+                  className="form-radio cursor-pointer text-blue-600"
                   checked={item.modelagem === tipo}
-                  onChange={() => setItem({ ...item, modelagem: tipo, tamanhoCamisa: '', tamanhoCalcao: '' })}
+                  onChange={() =>
+                    setItem({
+                      ...item,
+                      modelagem: tipo,
+                      tamanhoCamisa: "",
+                      tamanhoCalcao: "",
+                    })
+                  }
                 />
                 <span className="ml-2">{tipo}</span>
               </label>
             ))}
-            {item.tipoUniforme === 'Camisa' && (
-              <label className="inline-flex items-center">
+            {item.tipoUniforme === "Camisa" && (
+              <label className="inline-flex items-center cursor-pointer">
                 <input
                   type="radio"
-                  className="form-radio text-blue-600"
-                  checked={item.modelagem === 'Infantil'}
-                  onChange={() => setItem({ ...item, modelagem: 'Infantil', tamanhoCamisa: '', tamanhoCalcao: '' })}
+                  className="form-radio cursor-pointer text-blue-600"
+                  checked={item.modelagem === "Infantil"}
+                  onChange={() =>
+                    setItem({
+                      ...item,
+                      modelagem: "Infantil",
+                      tamanhoCamisa: "",
+                      tamanhoCalcao: "",
+                    })
+                  }
                 />
                 <span className="ml-2">Infantil</span>
               </label>
@@ -283,10 +332,12 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
           </div>
         </div>
 
-        <div className={clsx('grid gap-4', {
-          'grid-cols-2': item.tipoProduto === 'Kit',
-          'grid-cols-1': item.tipoProduto === 'Camisa'
-        })}>
+        <div
+          className={clsx("grid gap-4", {
+            "grid-cols-2": item.tipoProduto === "Kit",
+            "grid-cols-1": item.tipoProduto === "Camisa",
+          })}
+        >
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Tamanho da Camisa *
@@ -295,16 +346,22 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
               required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               value={item.tamanhoCamisa}
-              onChange={(e) => setItem({ ...item, tamanhoCamisa: e.target.value })}
+              onChange={(e) =>
+                setItem({ ...item, tamanhoCamisa: e.target.value })
+              }
             >
-              <option value="" disabled>Selecione um tamanho</option>
+              <option value="" disabled>
+                Selecione um tamanho
+              </option>
               {obterTamanhos(item.modelagem).map((tamanho) => (
-                <option key={tamanho} value={tamanho}>{tamanho}</option>
+                <option key={tamanho} value={tamanho}>
+                  {tamanho}
+                </option>
               ))}
             </select>
           </div>
 
-          {item.tipoProduto === 'Kit' && (
+          {item.tipoProduto === "Kit" && (
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Tamanho do Calção *
@@ -313,11 +370,17 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 value={item.tamanhoCalcao}
-                onChange={(e) => setItem({ ...item, tamanhoCalcao: e.target.value })}
+                onChange={(e) =>
+                  setItem({ ...item, tamanhoCalcao: e.target.value })
+                }
               >
-                <option value="" disabled>Selecione um tamanho</option>
+                <option value="" disabled>
+                  Selecione um tamanho
+                </option>
                 {obterTamanhos(item.modelagem).map((tamanho) => (
-                  <option key={tamanho} value={tamanho}>{tamanho}</option>
+                  <option key={tamanho} value={tamanho}>
+                    {tamanho}
+                  </option>
                 ))}
               </select>
             </div>
@@ -331,7 +394,7 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
           <textarea
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             rows={3}
-            value={item.observacoes || ''}
+            value={item.observacoes || ""}
             onChange={(e) => setItem({ ...item, observacoes: e.target.value })}
           />
         </div>
@@ -351,7 +414,7 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({ onSubmit, editingItem,
           type="submit"
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
         >
-          {editingItem ? 'Atualizar Item' : 'Adicionar à Lista'}
+          {editingItem ? "Atualizar Item" : "Adicionar à Lista"}
         </button>
       </div>
     </form>
