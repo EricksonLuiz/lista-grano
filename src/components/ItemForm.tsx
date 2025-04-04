@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  ItemPedido,
-  TipoModelagem,
-  TipoProduto,
-  TipoUniforme,
-  TipoRegata,
-  TipoManga,
-} from "../types";
+import { ItemPedido, TipoModelagem, TipoUniforme } from "../types";
 import { clsx } from "clsx";
 
 interface PropsFormularioItem {
@@ -103,6 +96,9 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({
       tipoProduto: "Camisa",
       tipoUniforme: "Camisa",
       tipoManga: "Curta",
+      tipoCamisa: "Tradicional",
+      tipoGola: "Tradicional",
+      tipoPunho: "Sem Punho",
       ehGoleiro: false,
       modelagem: "Masculino",
       tamanhoCamisa: "",
@@ -116,6 +112,9 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({
       tipoUniforme: tipo,
       tipoRegata: tipo === "Regata" ? "Nadadora" : undefined,
       tipoManga: tipo === "Camisa" ? "Curta" : undefined,
+      tipoCamisa: tipo === "Camisa" ? "Tradicional" : undefined,
+      tipoGola: tipo === "Camisa" ? "Tradicional" : undefined,
+      tipoPunho: tipo === "Camisa" ? "Sem Punho" : undefined,
       ehGoleiro: tipo === "Regata" ? false : item.ehGoleiro,
       modelagem:
         tipo === "Regata" && item.modelagem === "Infantil"
@@ -186,31 +185,33 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({
       )}
 
       {item.tipoUniforme === "Camisa" && (
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Tipo de Manga *
-          </label>
-          <div className="flex gap-4">
-            <label className="inline-flex items-center cursor-pointer">
-              <input
-                type="radio"
-                className="form-radio cursor-pointer text-blue-600"
-                checked={item.tipoManga === "Curta"}
-                onChange={() => setItem({ ...item, tipoManga: "Curta" })}
-              />
-              <span className="ml-2">Curta</span>
+        <>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tipo de Manga *
             </label>
-            <label className="inline-flex items-center cursor-pointer">
-              <input
-                type="radio"
-                className="form-radio cursor-pointer text-blue-600"
-                checked={item.tipoManga === "Longa"}
-                onChange={() => setItem({ ...item, tipoManga: "Longa" })}
-              />
-              <span className="ml-2">Longa</span>
-            </label>
+            <div className="flex gap-4">
+              <label className="inline-flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  className="form-radio cursor-pointer text-blue-600"
+                  checked={item.tipoManga === "Curta"}
+                  onChange={() => setItem({ ...item, tipoManga: "Curta" })}
+                />
+                <span className="ml-2">Curta</span>
+              </label>
+              <label className="inline-flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  className="form-radio cursor-pointer text-blue-600"
+                  checked={item.tipoManga === "Longa"}
+                  onChange={() => setItem({ ...item, tipoManga: "Longa" })}
+                />
+                <span className="ml-2">Longa</span>
+              </label>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -221,7 +222,7 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({
           <input
             type="text"
             required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm  focus:border-orange-500 focus:ring-orange-500"
             value={item.nome}
             onChange={(e) => setItem({ ...item, nome: e.target.value })}
           />
@@ -233,7 +234,7 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({
           </label>
           <input
             type="text"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm  focus:border-orange-500 focus:ring-orange-500"
             value={item.numero}
             onChange={(e) => setItem({ ...item, numero: e.target.value })}
           />
@@ -291,10 +292,7 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({
           </label>
           <div className="flex gap-4">
             {(["Masculino", "Feminino"] as TipoModelagem[]).map((tipo) => (
-              <label
-                key={tipo}
-                className="inline-flex i cursor-pointertems-center"
-              >
+              <label key={tipo} className="flex cursor-pointer items-center">
                 <input
                   type="radio"
                   className="form-radio cursor-pointer text-blue-600"
@@ -344,7 +342,7 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({
             </label>
             <select
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm  focus:border-orange-500 focus:ring-orange-500"
               value={item.tamanhoCamisa}
               onChange={(e) =>
                 setItem({ ...item, tamanhoCamisa: e.target.value })
@@ -368,7 +366,7 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({
               </label>
               <select
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm  focus:border-orange-500 focus:ring-orange-500"
                 value={item.tamanhoCalcao}
                 onChange={(e) =>
                   setItem({ ...item, tamanhoCalcao: e.target.value })
@@ -392,7 +390,7 @@ export const ItemForm: React.FC<PropsFormularioItem> = ({
             Observações
           </label>
           <textarea
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm  focus:border-orange-500 focus:ring-orange-500"
             rows={3}
             value={item.observacoes || ""}
             onChange={(e) => setItem({ ...item, observacoes: e.target.value })}

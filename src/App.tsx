@@ -6,7 +6,7 @@ import { ItemList } from "./components/ItemList";
 import { InfoCliente, ItemPedido } from "./types";
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
-import { Send, Phone, MapPin, PlusCircle } from "lucide-react";
+import { Send, PlusCircle } from "lucide-react";
 
 // Chave para armazenamento local
 const STORAGE_KEY = "pedido_uniformes_data";
@@ -121,12 +121,20 @@ function App() {
   const enviarParaWhatsApp = () => {
     if (!validarDadosCliente()) return;
 
+    // Informações sobre o tipo de camisa
+    const infoTipoCamisa =
+      `*Especificações da Camisa:*\n` +
+      `🧥 Tipo de Camisa: ${infoCliente.tipoCamisa || "Tradicional"}\n` +
+      `👕 Tipo de Gola: ${infoCliente.tipoGola || "Tradicional"}\n` +
+      `✂️ Punho: ${infoCliente.tipoPunho || "Sem Punho"}\n`;
+
     const mensagem = encodeURIComponent(
       `*Novo pedido de ${infoCliente.nomeCliente}*\n\n` +
         `*Informações do Cliente:*\n` +
         `📱 Telefone: ${infoCliente.telefone}\n` +
         (infoCliente.nomeTime ? `⚽ Time: ${infoCliente.nomeTime}\n` : "") +
         `📦 Total de itens: ${infoCliente.itens.length}\n\n` +
+        `${infoTipoCamisa}\n` +
         `*Lista de Itens:*\n\n${formatarListaItens()}`
     );
 
@@ -136,12 +144,27 @@ function App() {
   const baixarCSV = () => {
     if (!validarDadosCliente()) return;
 
+    // Função para formatar números com zeros à esquerda como texto
+    const formatarComoTexto = (valor: string | null | undefined): string => {
+      if (!valor) return "-";
+
+      // Se o valor começa com zero e contém apenas dígitos, adiciona um apóstrofo
+      if (valor.startsWith("0") && /^\d+$/.test(valor)) {
+        return `="${valor}"`; // Formato que o Excel reconhece como texto
+      }
+
+      return valor;
+    };
+
     const dados = infoCliente.itens.map((item) => ({
       "Nome do Cliente": infoCliente.nomeCliente,
       "Nome do Time": infoCliente.nomeTime || "-",
       Telefone: infoCliente.telefone,
+      "Tipo de Camisa": infoCliente.tipoCamisa || "Tradicional",
+      "Tipo de Gola": infoCliente.tipoGola || "Tradicional",
+      Punho: infoCliente.tipoPunho || "Sem Punho",
       Nome: item.nome,
-      Número: item.numero || "-",
+      Número: formatarComoTexto(item.numero), // Formata o número como texto
       Tipo: `${item.tipoProduto}${item.ehGoleiro ? " Goleiro" : ""}`,
       Uniforme:
         item.tipoUniforme === "Regata"
@@ -153,10 +176,14 @@ function App() {
       Observações: item.observacoes || "-",
     }));
 
+    // Configuração especial para o Papa Parse
     const csv = Papa.unparse(dados, {
       delimiter: ";",
       header: true,
+      // Não escapar aspas duplas para preservar o formato "=valor"
+      quotes: false,
     });
+
     const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
     saveAs(
       blob,
@@ -165,9 +192,9 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100">
       <Header
-        phone="(47) 99150-6901"
+        phone="(47) 99146-7992"
         address="R. Oscár Piske, 755 - Das Nações, Timbó, SC"
       />
 
@@ -178,7 +205,7 @@ function App() {
           </h1>
           <button
             onClick={iniciarNovaLista}
-            className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 flex items-center gap-2"
+            className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-800 flex items-center gap-2"
           >
             <PlusCircle size={18} />
             Nova Lista

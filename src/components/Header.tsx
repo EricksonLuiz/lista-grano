@@ -14,7 +14,7 @@ export const Header: React.FC<HeaderProps> = ({ phone, address }) => {
           <div className="flex items-center mb-4 md:mb-0">
             {/* Replace with your actual logo */}
             <img
-              src="../img/Grano L - Preto.svg"
+              src={"../public/logo.svg"}
               className="max-w-[150px]"
               title="Logo Grano"
             />
