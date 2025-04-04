@@ -40,17 +40,18 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
 
   // Garantir que os valores padrão sejam definidos
   useEffect(() => {
-    if (!formData.tipoCamisa || !formData.tipoGola || !formData.tipoPunho) {
-      const updatedData = {
-        ...formData,
-        tipoCamisa: formData.tipoCamisa || ("Tradicional" as TipoCamisa),
-        tipoGola: formData.tipoGola || ("Tradicional" as TipoGola),
-        tipoPunho: formData.tipoPunho || ("Sem Punho" as TipoPunho),
-      };
-      setFormData(updatedData);
-      onSubmit(updatedData);
-    }
-  }, []);
+    setFormData(
+      initialData || {
+        nomeCliente: "",
+        nomeTime: "",
+        telefone: "",
+        tipoCamisa: "Tradicional" as TipoCamisa,
+        tipoGola: "Tradicional" as TipoGola,
+        tipoPunho: "Sem Punho" as TipoPunho,
+        itens: [],
+      }
+    );
+  }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,8 +71,8 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
           value={formData.nomeCliente}
           onChange={(e) => {
             setFormData({ ...formData, nomeCliente: e.target.value });
-            onSubmit({ ...formData, nomeCliente: e.target.value });
           }}
+          onBlur={() => onSubmit(formData)}
         />
       </div>
 

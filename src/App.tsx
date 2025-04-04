@@ -31,6 +31,19 @@ function App() {
   }, [infoCliente]);
 
   const handleAddItem = (item: ItemPedido) => {
+    if (!infoCliente.nomeCliente.trim()) {
+      alert(
+        "Por favor, preencha o nome do cliente antes de adicionar itens à lista."
+      );
+      return;
+    }
+
+    if (!infoCliente.telefone.trim()) {
+      alert(
+        "Por favor, preencha o telefone de contato antes de adicionar itens à lista."
+      );
+      return;
+    }
     if (editandoItem) {
       setInfoCliente({
         ...infoCliente,
@@ -72,6 +85,9 @@ function App() {
           nomeCliente: "",
           nomeTime: "",
           telefone: "",
+          tipoCamisa: "Tradicional", // Valor padrão
+          tipoGola: "Tradicional", // Valor padrão
+          tipoPunho: "Sem Punho", // Valor padrão
           itens: [],
         });
         setEditandoItem(null);
@@ -217,7 +233,11 @@ function App() {
             <h2 className="text-xl font-semibold mb-4">
               Informações do Cliente
             </h2>
-            <CustomerForm onSubmit={setInfoCliente} initialData={infoCliente} />
+            <CustomerForm
+              key={infoCliente.nomeCliente || "new"}
+              onSubmit={setInfoCliente}
+              initialData={infoCliente}
+            />
           </section>
 
           <section className="bg-white rounded-lg shadow-sm p-6">
